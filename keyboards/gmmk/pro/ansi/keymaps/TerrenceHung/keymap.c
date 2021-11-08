@@ -98,3 +98,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
     }
 }
+
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t num_leds_total = led_max - led_min;
+    uint8_t num_indicators_enabled = (
+        (host_keyboard_led_state().caps_lock ? 1 : 0) +
+        (host_keyboard_led_state().num_lock ? 1 : 0)
+    );
+
+    if (host_keyboard_led_state().caps_lock) {
+        for (uint8_t i = led_min; i <= led_min + num_leds_total / num_indicators_enabled; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 255, 255, 255);
+        }
+    }
+    if (host_keyboard_led_state().num_lock) {
+        for (uint8_t i = led_min + num_leds_total - num_leds_total / num_indicators_enabled; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 255, 0, 0);
+        }
+    }
+}
