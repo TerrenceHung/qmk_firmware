@@ -16,6 +16,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+#ifdef CONSOLE_ENABLE
+#include "print.h"
+#endif // CONSOLE_ENABLE
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -88,6 +92,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uprintf("Caps lock state: %d\n", host_keyboard_led_state().caps_lock);
+    uprintf("Num lock state: %d\n", host_keyboard_led_state().num_lock);
+
     switch (keycode) {
         case KC_NLCK:
             if (record->event.pressed) {
@@ -101,10 +108,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t num_leds_total = led_max - led_min;
-    uint8_t num_indicators_enabled = (
-        (host_keyboard_led_state().caps_lock ? 1 : 0) +
-        (host_keyboard_led_state().num_lock ? 1 : 0)
-    );
+    uint8_t num_indicators_enabled = host_keyboard_led_state().caps_lock + host_keyboard_led_state().num_lock;
 
     if (host_keyboard_led_state().caps_lock) {
         for (uint8_t i = led_min; i <= led_min + num_leds_total / num_indicators_enabled; i++) {
