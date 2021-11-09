@@ -117,7 +117,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
     if (host_keyboard_led_state().num_lock) {
         for (uint8_t i = led_min + num_leds_total - num_leds_total / num_indicators_enabled; i <= led_max; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, 255, 0, 0);
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 255, 0);
         }
     }
 }
