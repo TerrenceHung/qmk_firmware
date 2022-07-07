@@ -92,8 +92,19 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    uprintf("Caps lock state: %d\n", host_keyboard_led_state().caps_lock);
-    uprintf("Num lock state: %d\n", host_keyboard_led_state().num_lock);
+    uint8_t num_indicators_enabled = host_keyboard_led_state().caps_lock + host_keyboard_led_state().num_lock;
+
+    // Some RGB animations do not work well with the indicator lights, so temporarily set RGB to blank while indicators
+    // are active, and reload the RGB settings if all indicators are off. This section is placed here instead of
+    // rgb_matrix_indicators_advanced_user because all the LEDs stay off inside that function.
+    if (keycode == KC_NLCK || keycode == KC_CAPS) {
+        if (num_indicators_enabled > 0) {
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            rgb_matrix_sethsv_noeeprom(HSV_OFF);
+        } else {
+            rgb_matrix_reload_from_eeprom();
+        }
+    }
 
     switch (keycode) {
         case KC_NLCK:
