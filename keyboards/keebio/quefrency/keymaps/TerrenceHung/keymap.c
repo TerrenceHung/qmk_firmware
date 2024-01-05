@@ -25,26 +25,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FN1] = LAYOUT_65(
     KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_SCRL, _______,
-    ALT_GRV, _______, KC_UP, _______,   _______, _______, _______, _______, _______, _______, _______, _______, _______, QK_BOOT,          KC_PGUP,
+    ALT_GRV, _______, KC_UP,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, QK_BOOT,          KC_PGUP,
     KC_CAPS, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, _______, _______, _______, KC_MPRV, KC_MPLY, KC_MNXT,          _______,          KC_PGDN,
-    _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, KC_PSCR, KC_HOME,
-    _______, _______, _______, _______, _______,          _______, _______,                   _______, _______, _______, _______, KC_PAUS, _______
+    _______,          RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, _______, _______, _______, _______, _______, _______,          _______, KC_PSCR, KC_HOME,
+    _______, QK_BOOT, _______, _______, _______,          _______, _______,                   _______, _______, _______, _______, KC_PAUS, _______
   )
 };
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_PGDN);
-        } else {
-            tap_code(KC_PGUP);
-        }
-    }
-    else if (index == 1) {
+    if (layer_state_is(0)) {
         if (clockwise) {
             tap_code(KC_VOLU);
         } else {
             tap_code(KC_VOLD);
+        }
+    } else if (layer_state_is(1)) {
+        if (clockwise) {
+            rgblight_increase_val();
+        } else {
+            rgblight_decrease_val();
         }
     }
     return false;
