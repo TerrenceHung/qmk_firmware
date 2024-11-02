@@ -1,1 +1,3 @@
+CONVERT_TO = promicro_rp2040
 ENCODER_MAP_ENABLE = yes
+CAPS_WORD_ENABLE = yes
