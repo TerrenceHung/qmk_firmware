@@ -15,7 +15,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [1] = LAYOUT(
         KC_GRV,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,             RGB_TOG, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
         LALT(KC_GRV), KC_1, KC_2,  KC_3,    KC_4,    KC_5,                                    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_F12,
-        KC_CAPS, LSFT(KC_1), LSFT(KC_2), LSFT(KC_3),LSFT(KC_4), LSFT(KC_5)                    LSFT(KC_6), LSFT(KC_7), LSFT(KC_8), LSFT(KC_9), LSFT(KC_0), _______,
+        KC_CAPS, LSFT(KC_1), LSFT(KC_2), LSFT(KC_3),LSFT(KC_4), LSFT(KC_5),                   LSFT(KC_6), LSFT(KC_7), LSFT(KC_8), LSFT(KC_9), LSFT(KC_0), _______,
         CW_TOGG, _______, _______, _______, _______, _______, KC_INS,                KC_SCRL, _______, KC_LBRC, KC_RBRC, LSFT(KC_LBRC), LSFT(KC_RBRC), _______,
                                    _______, _______, _______, _______,               _______, TG(3),   KC_DEL,  _______
     ),
@@ -43,7 +43,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [1] = { ENCODER_CCW_CW(RGB_VAD, RGB_VAI), ENCODER_CCW_CW(RGB_VAD, RGB_VAI) },
     [2] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI), ENCODER_CCW_CW(RGB_HUD, RGB_HUI) },
     [3] = { ENCODER_CCW_CW(RGB_RMOD, RGB_MOD), ENCODER_CCW_CW(RGB_RMOD, RGB_MOD) },
-    [4] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
+    // [4] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
 };
 #endif
 
