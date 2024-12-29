@@ -29,12 +29,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [3] = LAYOUT(
+        TG(3),   _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, TO(4),   _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
+        _______, TO(5),   _______, _______, _______, _______,                                   _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
+                                   _______, _______, _______, _______,               _______, TG(3),   _______, _______
+    ),
+
+    [4] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
+                                   _______, _______, KC_SPC,  _______,               _______, TG(4),   _______, _______
+    ),
+
+    [5] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,                                 _______, _______, KC_UP,   _______, _______, _______,
         _______, _______, _______, _______, _______, _______,                                 _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
         _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
-                                   _______, _______, _______, _______,               _______, TG(3),   _______, _______
-    )
+                                   _______, _______, _______, _______,               _______, TG(5),   _______, _______
+    ),
 };
 
 #if defined(ENCODER_MAP_ENABLE)
@@ -43,41 +59,61 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [1] = { ENCODER_CCW_CW(RGB_VAD, RGB_VAI), ENCODER_CCW_CW(RGB_VAD, RGB_VAI) },
     [2] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI), ENCODER_CCW_CW(RGB_HUD, RGB_HUI) },
     [3] = { ENCODER_CCW_CW(RGB_RMOD, RGB_MOD), ENCODER_CCW_CW(RGB_RMOD, RGB_MOD) },
-    // [4] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
+    [4] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
+    [5] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
 };
 #endif
 
 #ifdef OLED_ENABLE
 static void print_status_narrow(void) {
-    // Create OLED content
-    oled_write_P(PSTR("\n"), false);
-    oled_write_P(PSTR(""), false);
-    oled_write_P(PSTR("Lotus -58-"), false);
-    oled_write_P(PSTR("\n"), false);
+    oled_clear();
+    if (get_highest_layer(layer_state) < 3) {
+        // Create OLED content
+        oled_write_ln_P(PSTR("Lotus -58-"), false);
+        oled_write_ln_P(PSTR(""), false);
 
-    // Print current layer
-    oled_write_P(PSTR("Layer"), false);
-    switch (get_highest_layer(layer_state)) {
-        case 0:
-            oled_write_P(PSTR("-Base\n"), false);
-            break;
-        case 1:
-            oled_write_P(PSTR("-Smbl\n"), false);
-            break;
-        case 2:
-            oled_write_P(PSTR("-Nav \n"), false);
-            break;
-        case 3:
-            oled_write_P(PSTR("-Game\n"), false);
-            break;
-        default:
-            oled_write_P(PSTR("Undef"), false);
+        // Print current layer
+        oled_write_P(PSTR("Layer"), false);
+        switch (get_highest_layer(layer_state)) {
+            case 0:
+                oled_write_ln_P(PSTR("-Base"), false);
+                break;
+            case 1:
+                oled_write_ln_P(PSTR("-Smbl"), false);
+                break;
+            case 2:
+                oled_write_ln_P(PSTR("-Nav "), false);
+                break;
+            default:
+                oled_write_ln_P(PSTR("Undef"), false);
+        }
+
+        oled_write_ln_P(PSTR(""), false);
+        led_t led_usb_state = host_keyboard_led_state();
+        oled_write_ln_P(PSTR("Caps- lock"), led_usb_state.caps_lock);
+        oled_write_ln_P(PSTR("Caps- word"), is_caps_word_on());
+    } else {
+        oled_write_ln_P(PSTR("Game"), false);
+        oled_write_ln_P(PSTR("Layer"), false);
+        oled_write_ln_P(PSTR(""), false);
+
+        switch (get_highest_layer(layer_state)) {
+            case 3:
+                oled_write_ln_P(PSTR("W"), false);
+                oled_write_ln_P(PSTR("WASD"), false);
+                oled_write_ln_P(PSTR(""), false);
+                oled_write_ln_P(PSTR("A"), false);
+                oled_write_ln_P(PSTR("ArrowKeys"), false);
+                break;
+            case 4:
+                oled_write_ln_P(PSTR("WASD"), false);
+                break;
+            case 5:
+                oled_write_ln_P(PSTR("ArrowKeys"), false);
+                break;
+        }
     }
 
-    oled_write_P(PSTR("\n"), false);
-    led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("Caps- lock"), led_usb_state.caps_lock);
-    oled_write_P(PSTR("Caps- word"), is_caps_word_on());
 
 #ifdef AUTO_SHIFT_ENABLE
 
