@@ -126,18 +126,6 @@ static void print_status_narrow(void) {
                 break;
         }
     }
-
-
-#ifdef AUTO_SHIFT_ENABLE
-
-    bool autoshift = get_autoshift_state();
-    oled_advance_page(true);
-    oled_write_P(PSTR("Auto-Shift"), autoshift);
-    oled_advance_page(true);
-
-#endif
-
-
 }
 
 bool oled_task_user(void) {
