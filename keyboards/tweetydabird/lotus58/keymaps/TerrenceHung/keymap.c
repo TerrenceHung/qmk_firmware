@@ -31,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [3] = LAYOUT(
         TG(3),   _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
         _______, _______, TO(4),   _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
-        _______, TO(5),   _______, _______, _______, _______,                                   _______, _______, _______, _______, _______, _______,
+        _______, TO(5),   _______, _______, _______, _______,                                 QK_LOCK, _______, _______, _______, _______, _______,
         QK_BOOT, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, QK_BOOT,
                                    _______, _______, _______, _______,               _______, TG(3),   _______, _______
     ),
@@ -41,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,                                 _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______, _______, _______,
-                                   _______, _______, KC_SPC,  _______,               _______, TG(4),   _______, _______
+                                   _______, _______, KC_SPC,  MO(1),                 _______, TG(4),   _______, _______
     ),
 
     [5] = LAYOUT(
@@ -52,6 +52,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                    _______, _______, _______, _______,               _______, TG(5),   _______, _______
     ),
 };
+
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case QK_LOCK:
+            if (!record->event.pressed) {
+                layer_invert(3);
+            }
+            break;
+    }
+}
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
@@ -104,6 +114,9 @@ static void print_status_narrow(void) {
                 oled_write_ln_P(PSTR(""), false);
                 oled_write_ln_P(PSTR("A"), false);
                 oled_write_ln_P(PSTR("ArrowKeys"), false);
+                oled_write_ln_P(PSTR(""), false);
+                oled_write_ln_P(PSTR("H"), false);
+                oled_write_ln_P(PSTR("Hold"), false);
                 break;
             case 4:
                 oled_write_ln_P(PSTR("WASD"), false);
